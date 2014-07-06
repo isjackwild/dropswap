@@ -180,7 +180,8 @@ class window.ScrollText extends VisualEffect
 				pixel.id = 'c' + i + 'p' + x
 				pixel.className = 'pixel'
 				col.appendChild pixel
-		@setMessage ' test message'
+		#would be cool if it was a random sentence from the article
+		@setMessage ' Endorphins ("endogenous morphine") are endogenous opioid inhibitory neuropeptides. They are produced by the central nervous system and pituitary gland.'
 
 	onOff: (led, onOff) ->
 		div = document.getElementById(led)

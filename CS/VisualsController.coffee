@@ -19,10 +19,10 @@ rightFX = null
 
 $ ->
 
-	leftFX = new window.HorizontalLinesUp leftCtx, w, h
+	leftFX = new window.WhiteRedFlash leftDiv, w, h
 	rightFX = new window.ScrollText rightDiv, w, h
 
 	setInterval ->
 			leftFX.onBeat()
 			rightFX.onBeat()
-	, 500
+	, 250
