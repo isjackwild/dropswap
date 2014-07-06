@@ -12,7 +12,7 @@ rightCv.height = h
 rightCtx = rightCv.getContext '2d'
 
 leftDiv = document.getElementById 'leftDiv'
-leftDiv = document.getElementById 'rightDiv'
+rightDiv = document.getElementById 'rightDiv'
 
 leftFX = null
 rightFX = null
@@ -20,9 +20,8 @@ rightFX = null
 $ ->
 
 	leftFX = new window.Noise leftCtx, w, h
-	rightFX = new window.HorizontalLinesDown rightCtx, w, h
+	rightFX = new window.Counter rightDiv, w, h
 
 	setInterval ->
-			leftFX.remove()
 			rightFX.onBeat()
 	, 2000

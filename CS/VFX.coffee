@@ -11,13 +11,11 @@ class VisualEffect
 		@_w = w
 		@_h = h
 		@render()
-		console.log @_el
 
 	render: ->
-		@_step += 1
-		console.log 'render FX'
 
 	onBeat: ->
+		@_step += 1
 
 	remove: ->
 		if @_el.canvas
@@ -34,7 +32,7 @@ class window.Noise extends VisualEffect
 		super
 		@_ticker = setInterval =>
 			@render()
-		,50
+		,77
 
 	render: ->
 		image = @_el.createImageData @_w, @_h
@@ -46,12 +44,10 @@ class window.Noise extends VisualEffect
 
 		@_el.putImageData image, 0, 0
 
-
-
 class window.HorizontalLines extends VisualEffect
 	_stripes: []
 
-	constructor: (options) ->
+	constructor: ->
 		super
 		for i in [0...@_h]
 			if Math.random() > 0.5 then col = 'white' else col = 'black'
@@ -74,7 +70,6 @@ class window.HorizontalLines extends VisualEffect
 		@_el.restore()
 		@shiftStripes()
 
-
 class window.HorizontalLinesDown extends window.HorizontalLines
 	shiftStripes: ->
 		if Math.random() > 0.5 then col = 'white' else col = 'black'
@@ -86,3 +81,21 @@ class window.HorizontalLinesUp extends window.HorizontalLines
 		col = (Math.random() > 0.49) ? "white" : "black"
 		@_stripes.shift
 		@_stripes.push col
+
+class window.Counter extends VisualEffect
+	constructor: ->
+		super
+		span = document.createElement('span')
+		span.className = 'counter'
+		@_el.appendChild span
+		@_el.children[0].innerHTML = @_step
+		@_el.classList.add 'blackBg'
+
+	onBeat: ->
+		super
+		$('.counter')
+		@_el.classList.remove 'blackBg'
+		setTimeout =>
+			@_el.classList.add 'blackBg'
+		,30
+		@_el.children[0].innerHTML = @_step % 10
