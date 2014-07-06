@@ -1,3 +1,6 @@
+*
+	box-sizing border-box
+
 body, html
 	width 100%
 	height 100%
@@ -9,24 +12,56 @@ body, html
 	height 100%
 	position absolute
 	top 0
+	overflow hidden
 	&.left
 		left 0
 	&.right
 		right 0
 
 .counter
-	width 100%
+	width 36px
+	height 60px
 	position absolute
 	top 50%
-	margin-top -2vh
+	left 50%
+	margin-top -30px
+	margin-left -11px
 	text-align center
 	font-family 'Source Code Pro', monospaced
 	font-weight 200
 	font-size 4vh
 	color white
+	.pixel
+		width 10px
+		height 10px
+		float left
+		margin 1px
+		&.on
+			background white
+		&.red
+			background red !important
+
+.scrollText
+	width 200%
+	height 100%
+	float left
+	.col
+		height 100%
+		width 20px
+		float left
+		position relative
+		.pixel
+			height 16.66%
+			width 100%
+			background black
+			&.on
+				background white !important
 
 .blackBg
-	background black
+	background-color black
 
 .redBg
-	background red
+	background-color red
+
+.whiteRedFlash.fadeOut
+	-webkit-transition background-color 0.4s

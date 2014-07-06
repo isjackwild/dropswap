@@ -19,9 +19,10 @@ rightFX = null
 
 $ ->
 
-	leftFX = new window.Noise leftCtx, w, h
-	rightFX = new window.Counter rightDiv, w, h
+	leftFX = new window.HorizontalLinesUp leftCtx, w, h
+	rightFX = new window.ScrollText rightDiv, w, h
 
 	setInterval ->
+			leftFX.onBeat()
 			rightFX.onBeat()
-	, 2000
+	, 500
