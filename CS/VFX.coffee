@@ -162,26 +162,8 @@ class window.WhiteRedFlash extends VisualEffect
 
 class window.ScrollText extends VisualEffect
 	_ledPadding: 1
-	_displayWidth: 10
+	_displayWidth: null
 	_message: new Array()
-
-	constructor: ->
-		super
-		wrapper = document.createElement 'div'
-		wrapper.className = 'ScrollText'
-		@_el.appendChild wrapper
-		for i in [0...10]
-			col = document.createElement 'div'
-			col.className = 'col c' + i
-			col.style.width = @_h / 6
-			wrapper.appendChild col
-			for x in [0...6]
-				pixel = document.createElement 'div'
-				pixel.id = 'c' + i + 'p' + x
-				pixel.className = 'pixel'
-				col.appendChild pixel
-		#would be cool if it was a random sentence from the article
-		@setMessage ' Endorphins ("endogenous morphine") are endogenous opioid inhibitory neuropeptides. They are produced by the central nervous system and pituitary gland.'
 
 	onOff: (led, onOff) ->
 		div = document.getElementById(led)
@@ -216,6 +198,75 @@ class window.ScrollText extends VisualEffect
 					@onOff 'c'+x+'p'+y+'', 'on'
 				else
 					@onOff 'c'+x+'p'+y+'', 'off'
+
+class window.ScrollTextLarge extends window.ScrollText
+	constructor: ->
+		super
+		@_displayWidth = Math.ceil @_w / (@_h/6) + 1
+		wrapper = document.createElement 'div'
+		wrapper.className = 'ScrollTextLarge'
+		@_el.appendChild wrapper
+		for i in [0...@_displayWidth]
+			col = document.createElement 'div'
+			col.className = 'col c' + i
+			col.style.width = @_h / 6
+			wrapper.appendChild col
+			for x in [0...6]
+				pixel = document.createElement 'div'
+				pixel.id = 'c' + i + 'p' + x
+				pixel.className = 'pixel'
+				col.appendChild pixel
+		#would be cool if it was a random sentence from the article
+		@setMessage ' Endorphins ("endogenous morphine") are endogenous opioid inhibitory neuropeptides. They are produced by the central nervous system and pituitary gland.'
+
+class window.ScrollTextParagraph extends window.ScrollText
+	_numRows: 10
+
+	constructor: ->
+		super
+		@_displayWidth = Math.ceil @_w / (@_h / @_numRows / 6 )
+		#will need to * displaywidth by numrows for the splice stuff
+		wrapper = document.createElement 'div'
+		wrapper.className = 'ScrollTextParagraph'
+		@_el.appendChild wrapper
+		colNum = 0
+		for i in [0...@_numRows]
+			row = document.createElement 'div'
+			row.className = 'row r' + i
+			row.style.height = @_h / @_numRows
+			wrapper.appendChild row
+			for x in [0...@_displayWidth]
+				col = document.createElement 'div'
+				col.className = 'col c' + colNum
+				col.style.width = (@_h / 6) / @_numRows
+				row.appendChild col
+				for y in [0...6]
+					pixel = document.createElement 'div'
+					pixel.id = 'c' + colNum + 'p' + y
+					pixel.className = 'pixel'
+					col.appendChild pixel
+				colNum += 1
+		@setMessage ' Endorphins ("endogenous morphine") are endogenous opioid inhibitory neuropeptides. They are produced by the central nervous system and pituitary gland. Endorphins ("endogenous morphine") are endogenous opioid inhibitory neuropeptides. They are produced by the central nervous system and pituitary gland. Endorphins ("endogenous morphine") are endogenous opioid inhibitory neuropeptides. They are produced by the central nervous system and pituitary gland.'
+
+	onBeat: ->
+		# super
+		@_step += 1
+		if @_step > @_message.length
+			@_step = 0
+
+		partialMessage = @_message.slice @_step, @_step+(@_displayWidth * 10)
+		console.log @_message.length, partialMessage.length
+		console.log partialMessage
+		for x in [0...partialMessage.length]
+			if partialMessage[x] #find out the problem here... maybe some hidden character not recognised. 
+				for y in [0...partialMessage[x].length]
+					if partialMessage[x][y] is 1
+						@onOff 'c'+x+'p'+y+'', 'on'
+					else
+						@onOff 'c'+x+'p'+y+'', 'off'
+
+
+
 
 
 
