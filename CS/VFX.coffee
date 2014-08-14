@@ -3,7 +3,7 @@ class VisualEffect
 	_w: null
 	_h: null
 	_step: 0
-	_speed: 5 #set this with the BPM event eventually, normalize to 1...10
+	_speed: 10 #set this with the BPM event eventually, normalize to 1...10
 	_ticker: undefined
 	
 	constructor: (el, w, h) ->
@@ -57,7 +57,7 @@ class window.HorizontalLines extends VisualEffect
 			@_stripes.push col
 		@_ticker = setInterval =>
 			@render()
-		,50
+		,20
 
 	render: ->
 		@_el.save()
@@ -89,9 +89,12 @@ class window.HorizontalLinesUp extends window.HorizontalLines
 
 class window.Counter extends VisualEffect
 	constructor: ->
+		console.log '???'
 		super
 		wrapper = document.createElement 'div'
 		wrapper.className = 'counter'
+		if Math.random() > 0.5
+			wrapper.style.webkitTransform = "scale(5)"
 		@_el.appendChild wrapper
 		@_el.classList.add 'blackBg'
 		for i in [0...15]
@@ -158,6 +161,8 @@ class window.WhiteRedFlash extends VisualEffect
 	remove: =>
 		super
 		clearTimeout @_flashTimeout
+		@_el.classList.remove 'redBg'
+		@_el.classList.remove 'fadeOut'
 		@_el.classList.remove 'whiteRedFlash'
 
 class window.ScrollText extends VisualEffect
@@ -195,9 +200,9 @@ class window.ScrollText extends VisualEffect
 		for x in [0...partialMessage.length]
 			for y in [0...partialMessage[x].length]
 				if partialMessage[x][y] is 1
-					@onOff 'c'+x+'p'+y+'', 'on'
+					@onOff 'c'+x+'p'+y+''+@_el.id, 'on'
 				else
-					@onOff 'c'+x+'p'+y+'', 'off'
+					@onOff 'c'+x+'p'+y+''+@_el.id, 'off'
 
 class window.ScrollTextLarge extends window.ScrollText
 	constructor: ->
@@ -213,7 +218,7 @@ class window.ScrollTextLarge extends window.ScrollText
 			wrapper.appendChild col
 			for x in [0...6]
 				pixel = document.createElement 'div'
-				pixel.id = 'c' + i + 'p' + x
+				pixel.id = 'c' + i + 'p' + x + '' + @_el.id
 				pixel.className = 'pixel'
 				col.appendChild pixel
 		#would be cool if it was a random sentence from the article
@@ -242,7 +247,7 @@ class window.ScrollTextParagraph extends window.ScrollText
 				row.appendChild col
 				for y in [0...6]
 					pixel = document.createElement 'div'
-					pixel.id = 'c' + colNum + 'p' + y
+					pixel.id = 'c' + colNum + 'p' + y + '' + @_el.id
 					pixel.className = 'pixel'
 					col.appendChild pixel
 				colNum += 1
@@ -255,15 +260,13 @@ class window.ScrollTextParagraph extends window.ScrollText
 			@_step = 0
 
 		partialMessage = @_message.slice @_step, @_step+(@_displayWidth * 10)
-		console.log @_message.length, partialMessage.length
-		console.log partialMessage
 		for x in [0...partialMessage.length]
 			if partialMessage[x] #find out the problem here... maybe some hidden character not recognised. 
 				for y in [0...partialMessage[x].length]
 					if partialMessage[x][y] is 1
-						@onOff 'c'+x+'p'+y+'', 'on'
+						@onOff 'c'+x+'p'+y+@_el.id, 'on'
 					else
-						@onOff 'c'+x+'p'+y+'', 'off'
+						@onOff 'c'+x+'p'+y+@_el.id, 'off'
 
 
 

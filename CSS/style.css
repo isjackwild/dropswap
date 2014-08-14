@@ -1,0 +1,99 @@
+* {
+  box-sizing: border-box;
+}
+body,
+html {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+.magic {
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  overflow: hidden;
+}
+.magic.left {
+  left: 0;
+}
+.magic.right {
+  right: 0;
+}
+.counter {
+  width: 36px;
+  height: 60px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -30px;
+  margin-left: -11px;
+  text-align: center;
+  font-family: 'Source Code Pro', monospaced;
+  font-weight: 200;
+  font-size: 4vh;
+  color: #fff;
+}
+.counter .pixel {
+  width: 10px;
+  height: 10px;
+  float: left;
+  margin: 1px;
+}
+.counter .pixel.on {
+  background: #fff;
+}
+.counter .pixel.red {
+  background: #f00 !important;
+}
+.scrollTextLarge {
+  width: 150%;
+  height: 100%;
+  float: left;
+}
+.scrollTextLarge .col {
+  height: 100%;
+  width: 20px;
+  float: left;
+  position: relative;
+}
+.scrollTextLarge .col .pixel {
+  height: 16.66%;
+  width: 100%;
+  background: #000;
+}
+.scrollTextLarge .col .pixel.on {
+  background: #fff !important;
+}
+.scrollTextParagraph {
+  width: 110%;
+  height: 100%;
+  float: left;
+  background: #000;
+}
+.scrollTextParagraph .row {
+  position: relative;
+}
+.scrollTextParagraph .row .col {
+  height: 100%;
+  float: left;
+  position: relative;
+}
+.scrollTextParagraph .row .col .pixel {
+  height: 16.66%;
+  width: 100%;
+  background: #000;
+}
+.scrollTextParagraph .row .col .pixel.on {
+  background: #fff;
+}
+.blackBg {
+  background-color: #000;
+}
+.redBg {
+  background-color: #f00;
+}
+.whiteRedFlash.fadeOut {
+  -webkit-transition: background-color 0.4s;
+}
