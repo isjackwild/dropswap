@@ -28,7 +28,7 @@
 
     AudioAnalysisEngine.prototype._waitingForPeak = false;
 
-    AudioAnalysisEngine.prototype._peakSensitivityOffset = 0.8;
+    AudioAnalysisEngine.prototype._peakSensitivityOffset = 0.5;
 
     AudioAnalysisEngine.prototype._bassWaitingForPeak = false;
 
@@ -553,7 +553,10 @@
 
     VisualEffect.prototype._ticker = void 0;
 
+    VisualEffect.prototype._raf = void 0;
+
     function VisualEffect(el, w, h) {
+      console.log(el, '<<');
       this._el = el;
       this._w = w;
       this._h = h;
@@ -572,6 +575,9 @@
       }
       if (this._ticker) {
         clearInterval(this._ticker);
+      }
+      if (this._raf) {
+        cancelAnimationFrame(this._raf);
       }
       while (this._el.firstChild) {
         this._el.removeChild(this._el.firstChild);
@@ -710,7 +716,6 @@
 
     function Counter() {
       var i, pixel, wrapper, _i;
-      console.log('???');
       Counter.__super__.constructor.apply(this, arguments);
       wrapper = document.createElement('div');
       wrapper.className = 'counter';
@@ -920,7 +925,7 @@
           col.appendChild(pixel);
         }
       }
-      this.setMessage(' Endorphins ("endogenous morphine") are endogenous opioid inhibitory neuropeptides. They are produced by the central nervous system and pituitary gland.');
+      this.setMessage('transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin ');
     }
 
     return ScrollTextLarge;
@@ -959,7 +964,7 @@
           colNum += 1;
         }
       }
-      this.setMessage(' Endorphins ("endogenous morphine") are endogenous opioid inhibitory neuropeptides. They are produced by the central nervous system and pituitary gland. Endorphins ("endogenous morphine") are endogenous opioid inhibitory neuropeptides. They are produced by the central nervous system and pituitary gland. Endorphins ("endogenous morphine") are endogenous opioid inhibitory neuropeptides. They are produced by the central nervous system and pituitary gland.');
+      this.setMessage('transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin transport shy dolphin ');
     }
 
     ScrollTextParagraph.prototype.onBeat = function() {
@@ -994,6 +999,111 @@
     return ScrollTextParagraph;
 
   })(window.ScrollText);
+
+  window.ThreeDee = (function(_super) {
+    __extends(ThreeDee, _super);
+
+    ThreeDee.prototype._renderer = void 0;
+
+    ThreeDee.prototype._scene = void 0;
+
+    ThreeDee.prototype._camera = void 0;
+
+    ThreeDee.prototype._startTime = void 0;
+
+    ThreeDee.prototype._curTime = void 0;
+
+    function ThreeDee() {
+      var options;
+      ThreeDee.__super__.constructor.apply(this, arguments);
+      console.log('2');
+      options = {
+        antialias: true,
+        canvas: this._el
+      };
+      this._renderer = new THREE.WebGLRenderer(options);
+      this._renderer.setSize(this._w, this._h);
+      this._scene = new THREE.Scene();
+      this._startTime = new Date().getTime();
+    }
+
+    ThreeDee.prototype.render = function() {
+      ThreeDee.__super__.render.apply(this, arguments);
+      this._curTime = new Date().getTime() - this._startTime;
+      return this._raf = requestAnimationFrame(this.render);
+    };
+
+    return ThreeDee;
+
+  })(VisualEffect);
+
+  window.SpinningCube = (function(_super) {
+    __extends(SpinningCube, _super);
+
+    SpinningCube.prototype._cube = void 0;
+
+    SpinningCube.prototype._light = void 0;
+
+    SpinningCube.prototype._topSpot = void 0;
+
+    SpinningCube.prototype._bottomSpot = void 0;
+
+    function SpinningCube() {
+      var geo, material;
+      SpinningCube.__super__.constructor.apply(this, arguments);
+      console.log('SpinningCube');
+      console.log(this._el, this._w, '<<<');
+      this._camera = new THREE.PerspectiveCamera(75, 1, 1, 1000);
+      this._camera.position.z = 300;
+      this._camera.aspect = this._w / this._h;
+      this._camera.updateProjectionMatrix();
+      geo = new THREE.BoxGeometry(2, 2, 2);
+      material = new THREE.MeshLambertMaterial({
+        color: 0xffffff,
+        shading: THREE.FlatShading
+      });
+      this._cube = new THREE.Mesh(geo, material);
+      this._light = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.8);
+      this._topSpot = new THREE.SpotLight(0xffffff);
+      this._topSpot.position.set(1000, 1000, 10);
+      this._topSpot.angle = 1.5;
+      this._topSpot.lookAt(this._cube.position);
+      this._bottomSpot = new THREE.SpotLight(0xffffff);
+      this._bottomSpot.position.set(200, -1000, 10);
+      this._bottomSpot.angle = 0.5;
+      this._bottomSpot.lookAt(this._cube.position);
+      this._scene.add(this._cube);
+      this._scene.add(this._light);
+      this._scene.add(this._topSpot);
+      this._scene.add(this._bottomSpot);
+    }
+
+    SpinningCube.prototype.onBeat = function() {
+      SpinningCube.__super__.onBeat.apply(this, arguments);
+      if (this._beat % 3 === 0) {
+        this._topSpot.color.setHex(0xff0000);
+        this._bottomSpot.color.setHex(0xff0000);
+        return this._light.intensity = 0.18;
+      } else {
+        this._topSpot.color.setHex(0xffffff);
+        this._bottomSpot.color.setHex(0xffffff);
+        return this._light.intensity = 0.8;
+      }
+    };
+
+    SpinningCube.prototype.render = function() {
+      return;
+      SpinningCube.__super__.render.apply(this, arguments);
+      this._cube.rotation.y = this._curTime * 0.0003;
+      this._camera.position.y = Math.sin(this._curTime / 1000) * 3;
+      this._camera.position.z = Math.cos(this._curTime / 1000) * 3;
+      this._camera.lookAt(this._cube.position);
+      return this._renderer.render(this._scene, this._camera);
+    };
+
+    return SpinningCube;
+
+  })(window.ThreeDee);
 
 }).call(this);
 
@@ -1141,6 +1251,14 @@
           } else {
             ctxOrDiv = rightDiv;
           }
+          break;
+        case 8:
+          FX = window.SpinningCube;
+          if (leftOrRight === 'left') {
+            ctxOrDiv = leftCv;
+          } else {
+            ctxOrDiv = rightCv;
+          }
       }
       if (leftOrRight === 'left') {
         leftFX.remove();
@@ -1171,7 +1289,7 @@
     navigator.webkitGetUserMedia({
       audio: true
     }, window.audioAnalysisEngine.setupMic, onError);
-    leftFX = new window.Counter(leftDiv, w, h);
+    leftFX = new window.SpinningCube(leftCv, w, h);
     return rightFX = new window.ScrollTextParagraph(rightDiv, w, h);
   });
 

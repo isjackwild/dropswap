@@ -119,6 +119,12 @@ switchFX = =>
 				ctxOrDiv = leftDiv
 			else
 				ctxOrDiv = rightDiv
+		when 8
+			FX = window.SpinningCube
+			if leftOrRight is 'left'
+				ctxOrDiv = leftCv
+			else
+				ctxOrDiv = rightCv
 
 	if leftOrRight is 'left'
 		leftFX.remove()
@@ -148,5 +154,5 @@ $ ->
 			audio: true
 		,window.audioAnalysisEngine.setupMic, onError
 
-	leftFX = new window.Counter leftDiv, w, h
+	leftFX = new window.SpinningCube leftCv, w, h
 	rightFX = new window.ScrollTextParagraph rightDiv, w, h
